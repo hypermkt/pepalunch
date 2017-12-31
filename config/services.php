@@ -35,4 +35,9 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'slack' => [
+        'client_id' => env('SLACK_KEY'),
+        'client_secret' => env('SLACK_SECRET'),
+        'redirect' => env('SLACK_REDIRECT_URI'),
+    ],
 ];
