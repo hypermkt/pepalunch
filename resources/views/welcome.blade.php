@@ -65,6 +65,11 @@
         </style>
     </head>
     <body>
-        <a href="/auth/slack/login">Slack Login</a>
+        @guest
+            <a href="/auth/slack/login">Slack Login</a>
+        @else
+            Loggged in as: {{ Auth::user()->name }}
+            <a href="/auth/slack/logout">Logout</a>
+        @endguest
     </body>
 </html>
