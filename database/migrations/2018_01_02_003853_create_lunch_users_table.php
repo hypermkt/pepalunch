@@ -15,10 +15,10 @@ class CreateLunchUsersTable extends Migration
     {
         Schema::create('lunch_users', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('lunch_id')->unsigned();
             $table->foreign('lunch_id')->references('id')->on('lunches');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
