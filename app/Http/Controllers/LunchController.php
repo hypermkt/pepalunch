@@ -34,6 +34,8 @@ class LunchController extends Controller
     {
         $lunch = \LunchMatch::shuffleLunch(1); // TODO: JWTから取得したユーザーIDに変更する
 
-        return response($lunch, 201);
+        return response()
+            ->json($lunch)
+            ->setStatusCode(201);
     }
 }

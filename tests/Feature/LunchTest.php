@@ -32,5 +32,10 @@ class LunchTest extends TestCase
     {
         $response = $this->call('POST', '/api/lunches');
         $this->assertEquals(201, $response->getStatusCode());
+        $data = $response->getData(true);
+        $this->assertArrayHasKey('id', $data);
+        $this->assertArrayHasKey('lunch_at', $data);
+        $this->assertArrayHasKey('lunch_id', $data['lunch_users'][0]);
+        $this->assertArrayHasKey('user_id', $data['lunch_users'][0]);
     }
 }

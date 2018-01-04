@@ -107,16 +107,17 @@ class LunchMatchService
 
             $result = $lunch->toArray();
 
-            $result['users'][] = $lunch->lunchUsers()->create([
+            $lunchUsers[] = $lunch->lunchUsers()->create([
                 'lunch_id' => $lunch->id,
                 'user_id' => $myUserId
             ])->toArray();
             foreach ($matchedLunch['candidates'] as $candidate) {
-                $result['users'][] = $lunch->lunchUsers()->create([
+                $lunchUsers[] = $lunch->lunchUsers()->create([
                     'lunch_id' => $lunch->id,
                     'user_id' => $candidate->id
                 ])->toArray();
             }
+            $result['lunch_users'] = $lunchUsers;
 
             return $result;
         });
