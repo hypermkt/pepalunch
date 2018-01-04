@@ -32,7 +32,7 @@ class LunchController extends Controller
 
     public function store()
     {
-        $lunch = \LunchMatch::shuffleLunch(1);
+        $lunch = \LunchMatch::shuffleLunch(1); // TODO: JWTから取得したユーザーIDに変更する
 
         return response($lunch, 201);
     }
