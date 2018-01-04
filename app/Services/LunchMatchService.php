@@ -98,22 +98,35 @@ class LunchMatchService
      */
     public function saveLunch(int $myUserId, array $matchedLunch)
     {
-        DB::transaction(function() use ($myUserId, $matchedLunch) {
+        return DB::transaction(function() use ($myUserId, $matchedLunch) {
+            $result = null;
+
             $lunch = Lunch::create([
                 'lunch_at' => $matchedLunch['date']->toDateTimeString()
             ]);
 
-            $lunch->lunchUsers()->create([
+            $result = $lunch->toArray();
+
+            $result['users'][] = $lunch->lunchUsers()->create([
                 'lunch_id' => $lunch->id,
                 'user_id' => $myUserId
-            ]);
+            ])->toArray();
             foreach ($matchedLunch['candidates'] as $candidate) {
-                $lunch->lunchUsers()->create([
+                $result['users'][] = $lunch->lunchUsers()->create([
                     'lunch_id' => $lunch->id,
                     'user_id' => $candidate->id
-                ]);
+                ])->toArray();
             }
 
+            return $result;
         });
+    }
+
+    public function shuffleLunch(int $myUserId)
+    {
+        $baseDate = $this->calculateBaseDate();
+        $candidateDates = $this->getCandidateDates($myUserId, $baseDate);
+        $candidates = $this->getCandidates($myUserId, $candidateDates);
+        return $this->saveLunch($myUserId, $candidates);
     }
 }

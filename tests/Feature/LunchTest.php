@@ -16,7 +16,7 @@ class LunchTest extends TestCase
         $this->artisan('db:seed');
     }
 
-    public function testLunchIndex()
+    public function testIndex()
     {
         $response = $this->call('GET', '/api/lunches');
 
@@ -26,5 +26,11 @@ class LunchTest extends TestCase
         $this->assertArrayHasKey('lunch_at', $data[0]);
         $this->assertArrayHasKey('id', $data[0]['users'][0]);
         $this->assertArrayHasKey('name', $data[0]['users'][0]);
+    }
+
+    public function testStore()
+    {
+        $response = $this->call('POST', '/api/lunches');
+        $this->assertEquals(201, $response->getStatusCode());
     }
 }

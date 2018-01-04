@@ -29,4 +29,11 @@ class LunchController extends Controller
 
         return $lunches;
     }
+
+    public function store()
+    {
+        $lunch = \LunchMatch::shuffleLunch(1);
+
+        return response($lunch, 201);
+    }
 }
