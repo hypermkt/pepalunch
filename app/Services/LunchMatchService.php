@@ -9,8 +9,6 @@ use App\LunchUser;
 
 class LunchMatchService
 {
-    private $candidateDate = [];
-
     public function calculateBaseDate()
     {
         $now = Carbon::now();
@@ -65,7 +63,7 @@ class LunchMatchService
      * @param array $candidateDates
      * @return mixed
      */
-    public function shuffleLunch(int $myUserId, array $candidateDates)
+    public function getCandidates(int $myUserId, array $candidateDates)
     {
         foreach ($candidateDates as $candidateDate) {
             // 指定日に予定があるユーザー一覧
