@@ -11,18 +11,14 @@ class LunchController extends Controller
 {
     public function index()
     {
-        $lunches = DB::table('lunches')
-            ->join('lunch_users', 'lunches.id', '=', 'lunch_users.lunch_id')
-            ->where('lunch_users.user_id', 1) // TODO: JWTから取得したユーザーIDに変更する
-            ->where('lunches.lunch_at', '>=', now())
-            ->select('lunches.*')
-            ->get();
+        $lunch = new Lunch();
+        $lunches = $lunch->getMyLunches(1);// TODO: JWTから取得したユーザーIDに変更する
 
         foreach ($lunches as $lunch) {
             $lunchUsers = LunchUser::where('lunch_id', $lunch->id)->get();
             $users = [];
             foreach ($lunchUsers as $lunchUser) {
-                $users[] = $lunchUser->user()->first()->toArray();
+                $users[] = $lunchUser->user()->first();
             }
             $lunch->users = $users;
         }
