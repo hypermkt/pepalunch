@@ -14,8 +14,8 @@ class LunchTest extends TestCase
 
         $this->artisan('migrate:fresh');
         $this->artisan('db:seed');
-
     }
+
     public function testLunchIndex()
     {
         $response = $this->call('GET', '/api/lunches');
