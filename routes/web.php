@@ -11,10 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+//
+//Route::get('auth/slack/login', 'Auth\SlackController@redirectToSlackProvider');
+//Route::get('auth/slack/logout', 'Auth\SlackController@logout');
+//Route::get('auth/slack/callback', 'Auth\SlackController@handleSlackProviderCallback');
 
-Route::get('auth/slack/login', 'Auth\SlackController@redirectToSlackProvider');
-Route::get('auth/slack/logout', 'Auth\SlackController@logout');
-Route::get('auth/slack/callback', 'Auth\SlackController@handleSlackProviderCallback');
+Route::get('/{any}', function () {
+    return view('app');
+})->where('any', '.*');
