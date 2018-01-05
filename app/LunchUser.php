@@ -12,4 +12,9 @@ class LunchUser extends Model
     {
         return $this->belongsTo('App\Lunch');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

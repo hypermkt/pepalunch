@@ -9,8 +9,6 @@ use App\LunchUser;
 
 class LunchMatchService
 {
-    private $candidateDate = [];
-
     public function calculateBaseDate()
     {
         $now = Carbon::now();
@@ -37,19 +35,14 @@ class LunchMatchService
         $candidateDates = [];
 
         // 指定日以降の自分のランチスケジュールを取得する
-        $schedules = DB::table('lunches')
-            ->join('lunch_users', 'lunches.id', '=', 'lunch_users.lunch_id')
-            ->where('lunch_users.user_id', '=', $myUserId)
-            ->where('lunches.lunch_at', '>=' ,$date->toDateTimeString())
-            ->select('lunches.lunch_at')
-            ->get();
-
+        $lunch = new Lunch();
+        $lunches = $lunch->getMyLunches($myUserId, $date->toDateTimeString());
 
         // TODO: 日本の祝日も除外する
         for ($i = 0; $i < 30; $i++) {
             $date->addDay(1);
             if ($date->isWeekday()) {
-                if (!in_array($date->toDateTimeString(), array_pluck($schedules, 'lunch_at'))) {
+                if (!in_array($date->toDateTimeString(), array_pluck($lunches, 'lunch_at'))) {
                     array_push($candidateDates, clone $date);
                 }
             }
@@ -65,7 +58,7 @@ class LunchMatchService
      * @param array $candidateDates
      * @return mixed
      */
-    public function shuffleLunch(int $myUserId, array $candidateDates)
+    public function getCandidates(int $myUserId, array $candidateDates)
     {
         foreach ($candidateDates as $candidateDate) {
             // 指定日に予定があるユーザー一覧
@@ -100,22 +93,36 @@ class LunchMatchService
      */
     public function saveLunch(int $myUserId, array $matchedLunch)
     {
-        DB::transaction(function() use ($myUserId, $matchedLunch) {
+        return DB::transaction(function() use ($myUserId, $matchedLunch) {
+            $result = null;
+
             $lunch = Lunch::create([
                 'lunch_at' => $matchedLunch['date']->toDateTimeString()
             ]);
 
-            $lunch->lunchUsers()->create([
+            $result = $lunch->toArray();
+
+            $lunchUsers[] = $lunch->lunchUsers()->create([
                 'lunch_id' => $lunch->id,
                 'user_id' => $myUserId
-            ]);
+            ])->toArray();
             foreach ($matchedLunch['candidates'] as $candidate) {
-                $lunch->lunchUsers()->create([
+                $lunchUsers[] = $lunch->lunchUsers()->create([
                     'lunch_id' => $lunch->id,
                     'user_id' => $candidate->id
-                ]);
+                ])->toArray();
             }
+            $result['lunch_users'] = $lunchUsers;
 
+            return $result;
         });
+    }
+
+    public function shuffleLunch(int $myUserId)
+    {
+        $baseDate = $this->calculateBaseDate();
+        $candidateDates = $this->getCandidateDates($myUserId, $baseDate);
+        $candidates = $this->getCandidates($myUserId, $candidateDates);
+        return $this->saveLunch($myUserId, $candidates);
     }
 }

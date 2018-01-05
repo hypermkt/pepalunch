@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\User;
+use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        factory(App\User::class, 5)->create();
+        $candidates = \LunchMatch::getCandidates(User::first()->id, [Carbon::now()]);
+        \LunchMatch::saveLunch(User::first()->id, $candidates);
     }
 }
