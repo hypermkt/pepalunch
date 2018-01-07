@@ -1,5 +1,7 @@
 import lunch from './lunch';
+import user from './user';
 
 export default {
-    lunch: lunch
+    lunch: lunch,
+    user: user,
 }
