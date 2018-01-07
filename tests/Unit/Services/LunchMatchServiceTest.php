@@ -13,7 +13,6 @@ class LunchMatchServiceTest extends TestCase
         parent::setUp();
 
         $this->artisan('migrate:fresh');
-//        $this->artisan('db:seed');
     }
 
     public function testCalculateBaseDate_WhenBefore13()
