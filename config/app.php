@@ -165,6 +165,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         \SocialiteProviders\Manager\ServiceProvider::class,
         App\Providers\LunchMatchServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -228,7 +229,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'LunchMatch' => App\Facades\LunchMatchFacade::class,
-
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
     ],
 
 ];

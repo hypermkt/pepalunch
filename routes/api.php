@@ -18,6 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => 'api'], function () {
-    Route::resource('lunches',  'LunchController');
+    Route::post('login', 'Auth\SlackController@handleSlackProviderCallback');
+
+    Route::group(['middleware' => 'jwt.auth'], function () {
+        Route::resource('lunches',  'LunchController');
+    });
 });
 

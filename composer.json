@@ -10,7 +10,8 @@
         "laravel/framework": "5.5.*",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
-        "socialiteproviders/slack": "^3.0"
+        "socialiteproviders/slack": "^3.0",
+        "tymon/jwt-auth": "1.0.0-rc.1"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
