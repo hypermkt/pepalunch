@@ -39,7 +39,7 @@ class LunchMatchService
         $lunches = $lunch->getMyLunches($myUserId, $date->toDateTimeString());
 
         // TODO: 日本の祝日も除外する
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $date->addDay(1);
             if ($date->isWeekday()) {
                 if (!in_array($date->toDateTimeString(), array_pluck($lunches, 'lunch_at'))) {
