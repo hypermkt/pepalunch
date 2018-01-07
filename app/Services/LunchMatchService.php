@@ -68,7 +68,7 @@ class LunchMatchService
                 ->select('lunch_users.user_id')
                 ->get();
 
-            // ランチの候補者
+            // 全ユーザーから予定のあるユーザーを除外がする。残った人が候補者となる。
             $candidateUsers = DB::table('users')
                 ->where('id', '<>', $myUserId)
                 ->whereNotIn('id', array_pluck($reservedUsers, 'user_id'))
