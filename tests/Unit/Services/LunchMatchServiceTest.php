@@ -53,6 +53,17 @@ class LunchMatchServiceTest extends TestCase
         ], $service->getCandidateDates(1, $now2));
     }
 
+    public function testGetCandidates_ReturnFalse_WhenUserWasAlone()
+    {
+        factory(App\User::class, 1)->create();
+        $testDate = Carbon::create(2018, 1, 1, 12, 59);
+        Carbon::setTestNow($testDate);
+        $service = new LunchMatchService();
+        $candidateDates = $service->getCandidateDates(1, $service->calculateBaseDate());
+
+        $this->assertFalse($service->getCandidates(1, $candidateDates));
+    }
+
     public function testGetCandidates_WhenUserWasFivePeople()
     {
         factory(App\User::class, 5)->create();

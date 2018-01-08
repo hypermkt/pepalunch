@@ -56,7 +56,7 @@ class LunchMatchService
      *
      * @param int $myUserId
      * @param array $candidateDates
-     * @return mixed
+     * @return array|false
      */
     public function getCandidates(int $myUserId, array $candidateDates)
     {
@@ -83,6 +83,8 @@ class LunchMatchService
                 ];
             }
         }
+
+        return false;
     }
 
     /**
