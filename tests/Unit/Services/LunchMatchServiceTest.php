@@ -5,6 +5,8 @@ use Tests\TestCase;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Lunch;
+use App\LunchUser;
 
 class LunchMatchServiceTest extends TestCase
 {
@@ -75,5 +77,43 @@ class LunchMatchServiceTest extends TestCase
             $this->service->getCandidates(1, $candidateDates)['date']
         );
         $this->assertCount(3, $this->service->getCandidates(1, $candidateDates)['candidates']);
+    }
+
+    public function testSaveLunch_WillSave_WhenGivenValidParams()
+    {
+        factory(App\User::class, 5)->create();
+        $testDate = Carbon::create(2018, 1, 1, 12, 59);
+        Carbon::setTestNow($testDate);
+        $candidates = DB::table('users')
+            ->where('id', '<>', 1)
+            ->take(3)
+            ->get();
+        $matchedLunch = [
+            'date' => Carbon::now()->setDate(2018, 1, 2)->setTime(13, 0),
+            'candidates' => $candidates
+        ];
+
+        $this->service->saveLunch(1, $matchedLunch);
+
+        $lunch = Lunch::first();
+        $this->assertEquals('2018-01-02 13:00:00', $lunch->lunch_at);
+
+        $lunchUsers = LunchUser::where('lunch_id', $lunch->id)->get();
+        $this->assertCount(4, $lunchUsers);
+    }
+
+    public function testShuffleLunch_WillSave()
+    {
+        factory(App\User::class, 5)->create();
+        $testDate = Carbon::create(2018, 1, 1, 12, 59);
+        Carbon::setTestNow($testDate);
+
+        $this->service->shuffleLunch(1);
+
+        $lunch = Lunch::first();
+        $this->assertEquals('2018-01-02 13:00:00', $lunch->lunch_at);
+
+        $lunchUsers = LunchUser::where('lunch_id', $lunch->id)->get();
+        $this->assertCount(4, $lunchUsers);
     }
 }

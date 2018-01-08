@@ -120,6 +120,12 @@ class LunchMatchService
         });
     }
 
+    /**
+     * シャッフルランチ登録をする
+     *
+     * @param int $myUserId
+     * @return mixed
+     */
     public function shuffleLunch(int $myUserId)
     {
         $baseDate = $this->calculateBaseDate();
