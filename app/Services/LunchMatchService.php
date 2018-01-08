@@ -39,7 +39,7 @@ class LunchMatchService
         $lunches = $lunch->getMyLunches($myUserId, $date->toDateTimeString());
 
         // TODO: 日本の祝日も除外する
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $date->addDay(1);
             if ($date->isWeekday()) {
                 if (!in_array($date->toDateTimeString(), array_pluck($lunches, 'lunch_at'))) {
@@ -56,7 +56,7 @@ class LunchMatchService
      *
      * @param int $myUserId
      * @param array $candidateDates
-     * @return mixed
+     * @return array|false
      */
     public function getCandidates(int $myUserId, array $candidateDates)
     {
@@ -68,7 +68,7 @@ class LunchMatchService
                 ->select('lunch_users.user_id')
                 ->get();
 
-            // ランチの候補者
+            // 全ユーザーから予定のあるユーザーを除外がする。残った人が候補者となる。
             $candidateUsers = DB::table('users')
                 ->where('id', '<>', $myUserId)
                 ->whereNotIn('id', array_pluck($reservedUsers, 'user_id'))
@@ -83,6 +83,8 @@ class LunchMatchService
                 ];
             }
         }
+
+        return false;
     }
 
     /**
@@ -118,6 +120,12 @@ class LunchMatchService
         });
     }
 
+    /**
+     * シャッフルランチ登録をする
+     *
+     * @param int $myUserId
+     * @return mixed
+     */
     public function shuffleLunch(int $myUserId)
     {
         $baseDate = $this->calculateBaseDate();

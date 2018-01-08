@@ -5,20 +5,28 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use App\User;
 
 class LunchTest extends TestCase
 {
+    protected $token;
+
     public function setUp()
     {
         parent::setUp();
 
         $this->artisan('migrate:fresh');
         $this->artisan('db:seed');
+
+        $user = User::find(1);
+        $this->token = JWTAuth::fromUser($user);
     }
 
     public function testIndex()
     {
-        $response = $this->call('GET', '/api/lunches');
+
+        $response = $this->call('GET', '/api/lunches?token=' . $this->token);
 
         $this->assertEquals(200, $response->getStatusCode());
         $data = $response->getData(true);
@@ -30,7 +38,7 @@ class LunchTest extends TestCase
 
     public function testStore()
     {
-        $response = $this->call('POST', '/api/lunches');
+        $response = $this->call('POST', '/api/lunches?token=' . $this->token);
         $this->assertEquals(201, $response->getStatusCode());
         $data = $response->getData(true);
         $this->assertArrayHasKey('id', $data);
