@@ -166,6 +166,7 @@ return [
         \SocialiteProviders\Manager\ServiceProvider::class,
         App\Providers\LunchMatchServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        Optimus\Heimdal\Provider\LaravelServiceProvider::class,
 
         /*
          * Package Service Providers...
