@@ -25,7 +25,6 @@ class LunchTest extends TestCase
 
     public function testIndex()
     {
-
         $response = $this->call('GET', '/api/lunches?token=' . $this->token);
 
         $this->assertEquals(200, $response->getStatusCode());

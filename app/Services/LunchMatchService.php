@@ -131,6 +131,9 @@ class LunchMatchService
         $baseDate = $this->calculateBaseDate();
         $candidateDates = $this->getCandidateDates($myUserId, $baseDate);
         $candidates = $this->getCandidates($myUserId, $candidateDates);
+        if (!$candidates) {
+            return false;
+        }
         return $this->saveLunch($myUserId, $candidates);
     }
 }
