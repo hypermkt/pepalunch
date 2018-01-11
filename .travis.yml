@@ -1,7 +1,15 @@
 language: php
+
 php:
   - '7.1'
-install:
+
+services:
+  - mysql
+
+before_script:
+  - cp .env.travis .env
+  - mysql -e 'create database pepalunch;'
   - composer install
+
 script:
   - ./vendor/bin/phpunit
