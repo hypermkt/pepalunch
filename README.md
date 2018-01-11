@@ -1,4 +1,4 @@
-# pepalunch
+# pepalunch [![Build Status](https://travis-ci.org/hypermkt/pepalunch.svg?branch=master)](https://travis-ci.org/hypermkt/pepalunch)
 
 ## Requirements
 
