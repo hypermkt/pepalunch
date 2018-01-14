@@ -21,5 +21,6 @@ $factory->define(App\User::class, function (Faker $faker) {
         'remember_token' => str_random(10),
         'slack_id' => str_random(10),
         'slack_access_token' => str_random(10),
+        'icon_image_url' => 'https://secure.gravatar.com/avatar/022fe97731555344992c588527848cb7.jpg?s=72&d=https%3A%2F%2Fa.slack-edge.com%2F66f9%2Fimg%2Favatars%2Fava_0013-72.png',
     ];
 });
