@@ -6,6 +6,7 @@
             <p>予定日時：{{ lunch.lunch_at }}</p>
             <p>参加者</p>
             <template v-for="user in lunch.users">
+                <img :src="user.icon_image_url" />
                 <p>{{ user.name }}</p>
             </template>
         </template>
