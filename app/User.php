@@ -16,7 +16,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'slack_id', 'slack_access_token'
+        'name', 'email', 'password', 'slack_id', 'slack_access_token', 'icon_image_url'
     ];
 
     /**

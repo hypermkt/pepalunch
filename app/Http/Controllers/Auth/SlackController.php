@@ -51,7 +51,8 @@ class SlackController extends Controller
         return User::create([
             'name' => $slackUser->accessTokenResponseBody['user']['name'],
             'slack_id' => $slackUser->accessTokenResponseBody['user']['id'],
-            'slack_access_token' => $slackUser->accessTokenResponseBody['access_token']
+            'slack_access_token' => $slackUser->accessTokenResponseBody['access_token'],
+            'icon_image_url' => $slackUser->accessTokenResponseBody['user']['image_72']
         ]);
     }
 }
