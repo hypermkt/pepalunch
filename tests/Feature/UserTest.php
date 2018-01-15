@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\User;
 
-class LunchTest extends TestCase
+class UserTest extends TestCase
 {
     protected $token;
 
