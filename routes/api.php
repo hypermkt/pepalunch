@@ -22,7 +22,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('login', 'Auth\SlackController@handleSlackProviderCallback');
 
     Route::group(['middleware' => 'jwt.auth'], function () {
-        Route::resource('users',  'UserController', ['only' => ['update']]);
+        Route::resource('users',  'UserController', ['only' => ['update', 'show']]);
         Route::resource('lunches',  'LunchController');
     });
 });
