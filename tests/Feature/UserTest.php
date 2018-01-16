@@ -40,6 +40,6 @@ class UserTest extends TestCase
         $this->assertArrayHasKey('name', $data);
         $this->assertArrayHasKey('email', $data);
         $this->assertArrayHasKey('icon_image_url', $data);
-        $this->assertArrayHasKey('wanted_lunch', $data);
+        $this->assertArrayHasKey('active', $data);
     }
 }

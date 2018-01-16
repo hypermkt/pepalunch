@@ -18,7 +18,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        $data = $request->only(['wanted_lunch']);
+        $data = $request->only(['active']);
 
         return response()
             ->json($user->update($data))

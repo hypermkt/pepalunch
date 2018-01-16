@@ -14,7 +14,7 @@ class AddColumnToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('wanted_lunch')->default(true);
+            $table->boolean('active')->default(true);
         });
     }
 
@@ -26,7 +26,7 @@ class AddColumnToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropIfExists('wanted_lunch');
+            $table->dropIfExists('active');
         });
     }
 }
