@@ -7,4 +7,7 @@ export default {
     update: (id, params) => {
         return client.put('/users/' + id, params);
     },
+    show: (id) => {
+        return client.get('/users/' + id);
+    }
 }
