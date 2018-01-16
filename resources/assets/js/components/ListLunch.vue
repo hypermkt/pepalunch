@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>ランチに行きたい：<el-switch v-model="active"></el-switch></p>
+        <p>ランチに行きたい：<el-switch @change="updateActive" v-model="active"></el-switch></p>
         <br />
         <button @click="createShuffleLunch()">シャッフルランチ</button>
         <h2>ランチ予定</h2>
@@ -22,17 +22,12 @@
     export default {
         data() {
             return {
-                user: {},
+                active: false,
                 lunches: []
             }
         },
-        computed: {
-            active() {
-                return !!this.user.active;
-            }
-        },
-        mounted() {
-            this.fetchUser();
+        created() {
+            this.assignActive();
             this.fetchMyLunches();
         },
         methods: {
@@ -41,11 +36,15 @@
                     this.lunches = response.data;
                 });
             },
-            fetchUser() {
+            assignActive() {
                 let payload = jwtDecode(localStorage.getItem('token'));
                 api.user.show(payload.sub).then((response) => {
-                    this.user = response.data;
+                    this.active = !!response.data.active;
                 });
+            },
+            updateActive() {
+                let payload = jwtDecode(localStorage.getItem('token'));
+                api.user.update(payload.sub, {active: this.active});
             },
             createShuffleLunch() {
                 api.lunch.create().then((response) => {
