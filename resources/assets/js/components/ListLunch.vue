@@ -1,5 +1,7 @@
 <template>
     <div>
+        <p>ランチに行きたい：<el-switch @change="updateActive" v-model="active"></el-switch></p>
+        <br />
         <button @click="createShuffleLunch()">シャッフルランチ</button>
         <h2>ランチ予定</h2>
         <template v-for="lunch in lunches">
@@ -15,14 +17,17 @@
 
 <script>
     import api from '../api/index';
+    import jwtDecode from 'jwt-decode';
 
     export default {
         data() {
             return {
+                active: false,
                 lunches: []
             }
         },
-        mounted() {
+        created() {
+            this.assignActive();
             this.fetchMyLunches();
         },
         methods: {
@@ -30,6 +35,16 @@
                 api.lunch.list().then((response) => {
                     this.lunches = response.data;
                 });
+            },
+            assignActive() {
+                let payload = jwtDecode(localStorage.getItem('token'));
+                api.user.show(payload.sub).then((response) => {
+                    this.active = !!response.data.active;
+                });
+            },
+            updateActive() {
+                let payload = jwtDecode(localStorage.getItem('token'));
+                api.user.update(payload.sub, {active: this.active});
             },
             createShuffleLunch() {
                 api.lunch.create().then((response) => {
