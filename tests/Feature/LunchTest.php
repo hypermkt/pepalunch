@@ -25,24 +25,42 @@ class LunchTest extends TestCase
 
     public function testIndex()
     {
-        $response = $this->call('GET', '/api/lunches?token=' . $this->token);
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $data = $response->getData(true);
-        $this->assertArrayHasKey('id', $data[0]);
-        $this->assertArrayHasKey('lunch_at', $data[0]);
-        $this->assertArrayHasKey('id', $data[0]['users'][0]);
-        $this->assertArrayHasKey('name', $data[0]['users'][0]);
+        $this->call('GET', '/api/lunches?token=' . $this->token)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                '*' => [
+                    'id',
+                    'lunch_at',
+                    'created_at',
+                    'updated_at',
+                    'users' => [
+                        '*' => [
+                            'id',
+                            'name',
+                        ]
+                    ]
+                ]
+            ]);
     }
 
     public function testStore()
     {
-        $response = $this->call('POST', '/api/lunches?token=' . $this->token);
-        $this->assertEquals(201, $response->getStatusCode());
-        $data = $response->getData(true);
-        $this->assertArrayHasKey('id', $data);
-        $this->assertArrayHasKey('lunch_at', $data);
-        $this->assertArrayHasKey('lunch_id', $data['lunch_users'][0]);
-        $this->assertArrayHasKey('user_id', $data['lunch_users'][0]);
+        $this->call('POST', '/api/lunches?token=' . $this->token)
+            ->assertStatus(201)
+            ->assertJsonStructure([
+                'id',
+                'lunch_at',
+                'created_at',
+                'updated_at',
+                'lunch_users' => [
+                    '*' => [
+                        'id',
+                        'lunch_id',
+                        'user_id',
+                        'created_at',
+                        'updated_at',
+                    ]
+                ]
+            ]);
     }
 }
