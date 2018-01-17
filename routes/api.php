@@ -22,7 +22,7 @@ Route::group(['middleware' => 'api'], function () {
 
     Route::group(['middleware' => 'jwt.auth'], function () {
         Route::resource('users',  'UserController', ['only' => ['update', 'show']]);
-        Route::resource('lunches',  'LunchController');
+        Route::resource('lunches',  'LunchController', ['only' => ['index', 'store']]);
     });
 });
 
