@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "element-ui": "^2.0.11",
-        "jwt-decode": "^2.2.0"
+        "jwt-decode": "^2.2.0",
+        "vuex": "^3.0.1"
     }
 }
