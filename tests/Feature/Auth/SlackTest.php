@@ -30,6 +30,7 @@ class SlackTest extends TestCase
         Socialite::shouldReceive('driver->stateless->user')->andReturn($slackUser);
 
         $this->call('POST', '/api/login')
-            ->assertStatus(200);
+            ->assertStatus(200)
+            ->assertJsonStructure(['token']);
     }
 }
