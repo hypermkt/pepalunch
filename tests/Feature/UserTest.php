@@ -25,21 +25,20 @@ class UserTest extends TestCase
 
     public function testUpdate()
     {
-        $response = $this->call('PUT', '/api/users/1?token=' . $this->token);
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->call('PUT', '/api/users/1?token=' . $this->token)
+            ->assertStatus(204);
     }
 
     public function testShow()
     {
-        $response = $this->call('GET', '/api/users/1?token=' . $this->token);
-
-        $response->assertStatus(200);
-        $data = $response->getData(true);
-
-        $this->assertArrayHasKey('id', $data);
-        $this->assertArrayHasKey('name', $data);
-        $this->assertArrayHasKey('email', $data);
-        $this->assertArrayHasKey('icon_image_url', $data);
-        $this->assertArrayHasKey('active', $data);
+        $this->call('GET', '/api/users/1?token=' . $this->token)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'id',
+                'name',
+                'email',
+                'icon_image_url',
+                'active',
+            ]);
     }
 }
