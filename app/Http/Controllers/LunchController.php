@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Lunch;
 use App\LunchUser;
+use Auth;
 use Psr\Log\InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -15,7 +16,7 @@ class LunchController extends Controller
     public function index()
     {
         $lunch = new Lunch();
-        $lunches = $lunch->getMyLunches(1);// TODO: JWTから取得したユーザーIDに変更する
+        $lunches = $lunch->getMyLunches(Auth::user()->id);
 
         foreach ($lunches as $lunch) {
             $lunchUsers = LunchUser::where('lunch_id', $lunch->id)->get();
@@ -31,7 +32,7 @@ class LunchController extends Controller
 
     public function store()
     {
-        $lunch = \LunchMatch::shuffleLunch(1); // TODO: JWTから取得したユーザーIDに変更する
+        $lunch = \LunchMatch::shuffleLunch(Auth::user()->id);
         if (!$lunch) {
             throw new BadRequestHttpException('Failed to store lunch', null, 400);
         }
