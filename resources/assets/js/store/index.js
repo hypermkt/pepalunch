@@ -3,7 +3,9 @@ import Vuex from 'vuex';
 
 import lunch from './lunch';
 
-const store = new Vuex.store({
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
     modules: {
         lunch
     }

@@ -28,14 +28,11 @@
         },
         created() {
             this.assignActive();
-            this.fetchMyLunches();
+            this.$store.dispatch('fetchMyLunches').then(() => {
+                this.lunches = this.$store.state.lunch.lunches;
+            });
         },
         methods: {
-            fetchMyLunches() {
-                api.lunch.list().then((response) => {
-                    this.lunches = response.data;
-                });
-            },
             assignActive() {
                 let payload = jwtDecode(localStorage.getItem('token'));
                 api.user.show(payload.sub).then((response) => {
@@ -48,7 +45,9 @@
             },
             createShuffleLunch() {
                 api.lunch.create().then((response) => {
-                    this.fetchMyLunches();
+                    this.$store.dispatch('fetchMyLunches').then(() => {
+                        this.lunches = this.$store.state.lunch.lunches;
+                    });
                 });
             }
         }
