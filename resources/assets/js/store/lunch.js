@@ -13,6 +13,14 @@ export default {
                 commit('storeLunches', {lunches});
             });
         },
+        createShuffleLunch({state, commit}) {
+            api.lunch.create().then((response) => {
+                api.lunch.list().then((response) => {
+                    let lunches = response.data;
+                    commit('storeLunches', { lunches });
+                });
+            });
+        }
     },
     mutations: {
         storeLunches(state, payload) {

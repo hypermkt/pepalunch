@@ -4,7 +4,7 @@
         <br />
         <button @click="createShuffleLunch()">シャッフルランチ</button>
         <h2>ランチ予定</h2>
-        <template v-for="lunch in lunches">
+        <template v-for="lunch in this.$store.state.lunch.lunches">
             <p>予定日時：{{ lunch.lunch_at }}</p>
             <p>参加者</p>
             <template v-for="user in lunch.users">
@@ -23,14 +23,11 @@
         data() {
             return {
                 active: false,
-                lunches: []
             }
         },
         created() {
             this.assignActive();
-            this.$store.dispatch('fetchMyLunches').then(() => {
-                this.lunches = this.$store.state.lunch.lunches;
-            });
+            this.$store.dispatch('fetchMyLunches');
         },
         methods: {
             assignActive() {
@@ -44,11 +41,7 @@
                 api.user.update(payload.sub, {active: this.active});
             },
             createShuffleLunch() {
-                api.lunch.create().then((response) => {
-                    this.$store.dispatch('fetchMyLunches').then(() => {
-                        this.lunches = this.$store.state.lunch.lunches;
-                    });
-                });
+                this.$store.dispatch('createShuffleLunch');
             }
         }
     }
