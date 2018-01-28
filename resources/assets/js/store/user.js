@@ -16,7 +16,11 @@ export default {
             commit('storeUserId', payload);
 
             return response.status;
-        }
+        },
+        updateActive({commit}, {userId, active}) {
+            api.user.update(userId, {active});
+        },
+
     },
     mutations: {
         storeToken(state, payload) {

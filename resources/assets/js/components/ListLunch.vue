@@ -35,7 +35,10 @@
                 });
             },
             updateActive() {
-                api.user.update(this.$store.state.user.userId, {active: this.active});
+                this.$store.dispatch('updateActive', {
+                    userId: this.$store.state.user.userId,
+                    active: this.active
+                });
             },
             createShuffleLunch() {
                 this.$store.dispatch('createShuffleLunch');
