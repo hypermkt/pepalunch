@@ -1,4 +1,5 @@
 import api from '../api';
+import jwtDecode from 'jwt-decode';
 
 export default {
     state: {

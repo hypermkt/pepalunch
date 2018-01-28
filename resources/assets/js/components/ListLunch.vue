@@ -17,7 +17,6 @@
 
 <script>
     import api from '../api/index';
-    import jwtDecode from 'jwt-decode';
 
     export default {
         data() {
