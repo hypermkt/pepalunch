@@ -31,14 +31,12 @@
         },
         methods: {
             assignActive() {
-                let payload = jwtDecode(localStorage.getItem('token'));
-                api.user.show(payload.sub).then((response) => {
+                api.user.show(this.$store.state.user.userId).then((response) => {
                     this.active = !!response.data.active;
                 });
             },
             updateActive() {
-                let payload = jwtDecode(localStorage.getItem('token'));
-                api.user.update(payload.sub, {active: this.active});
+                api.user.update(this.$store.state.user.userId, {active: this.active});
             },
             createShuffleLunch() {
                 this.$store.dispatch('createShuffleLunch');
