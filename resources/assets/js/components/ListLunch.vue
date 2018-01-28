@@ -36,7 +36,7 @@
             },
             updateActive() {
                 this.$store.dispatch('updateActive', {
-                    userId: this.$store.state.user.userId,
+                    userId: localStorage.getItem('userId'),
                     active: this.active
                 });
             },

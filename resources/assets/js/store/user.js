@@ -13,7 +13,7 @@ export default {
             localStorage.token = response.data.token;
 
             let payload = jwtDecode(response.data.token);
-            commit('storeUserId', payload);
+            localStorage.userId = payload.sub;
 
             return response.status;
         },
@@ -26,8 +26,5 @@ export default {
         storeToken(state, payload) {
             state.token = payload.token
         },
-        storeUserId(state, payload) {
-            state.userId = payload.sub;
-        }
     }
 }
