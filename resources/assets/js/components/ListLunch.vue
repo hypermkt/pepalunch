@@ -4,7 +4,7 @@
         <br />
         <button @click="createShuffleLunch()">シャッフルランチ</button>
         <h2>ランチ予定</h2>
-        <template v-for="lunch in lunches">
+        <template v-for="lunch in this.$store.state.lunch.lunches">
             <p>予定日時：{{ lunch.lunch_at }}</p>
             <p>参加者</p>
             <template v-for="user in lunch.users">
@@ -17,39 +17,31 @@
 
 <script>
     import api from '../api/index';
-    import jwtDecode from 'jwt-decode';
 
     export default {
         data() {
             return {
                 active: false,
-                lunches: []
             }
         },
         created() {
             this.assignActive();
-            this.fetchMyLunches();
+            this.$store.dispatch('fetchMyLunches');
         },
         methods: {
-            fetchMyLunches() {
-                api.lunch.list().then((response) => {
-                    this.lunches = response.data;
-                });
-            },
             assignActive() {
-                let payload = jwtDecode(localStorage.getItem('token'));
-                api.user.show(payload.sub).then((response) => {
+                api.user.show(this.$store.state.user.userId).then((response) => {
                     this.active = !!response.data.active;
                 });
             },
             updateActive() {
-                let payload = jwtDecode(localStorage.getItem('token'));
-                api.user.update(payload.sub, {active: this.active});
+                this.$store.dispatch('updateActive', {
+                    userId: localStorage.getItem('userId'),
+                    active: this.active
+                });
             },
             createShuffleLunch() {
-                api.lunch.create().then((response) => {
-                    this.fetchMyLunches();
-                });
+                this.$store.dispatch('createShuffleLunch');
             }
         }
     }
